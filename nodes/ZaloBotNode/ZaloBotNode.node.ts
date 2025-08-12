@@ -19,6 +19,13 @@ export class ZaloBotNode implements INodeType {
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
 
+		credentials: [
+			{
+				name: 'zaloBotCredentialsApi',
+				required: true,
+			},
+		],
+
 		properties: [
 			{
 				displayName: 'Operation',
