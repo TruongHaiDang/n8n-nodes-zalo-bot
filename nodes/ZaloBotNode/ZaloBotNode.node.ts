@@ -1,7 +1,5 @@
 import type {
 	IExecuteFunctions,
-	ICredentialTestFunctions,
-	INodeCredentialTestResult,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
@@ -15,18 +13,11 @@ export class ZaloBotNode implements INodeType {
 		group: ['transform'],
 		version: 1,
 		description: 'Zalo Bot',
+		icon: 'file:zaloBotNode.svg',
 		subtitle: '={{ $parameter["operation"] }}',
 		defaults: { name: 'Zalo Bot' },
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
-
-		credentials: [
-			{
-				name: 'zaloBotCredentialsApi',
-				required: true,
-				testedBy: 'zaloCredsTest',
-			},
-		],
 
 		properties: [
 			{
@@ -142,40 +133,6 @@ export class ZaloBotNode implements INodeType {
 				required: true,
 			},
 		],
-	};
-
-	methods = {
-		credentialTest: {
-			async zaloCredsTest(
-				this: ICredentialTestFunctions,
-				credential: any,
-			): Promise<INodeCredentialTestResult> {
-				const token =
-					(credential.data?.botToken ?? credential.botToken) as string | undefined;
-				if (!token) return { status: 'Error', message: 'Missing Bot Token' };
-
-				try {
-					const res = await this.helpers.request({
-						method: 'POST',
-						url: `https://bot-api.zapps.me/bot${token}/getMe`,
-						headers: { 'Content-Type': 'application/json' },
-						json: true,
-					});
-
-					if (res?.ok === true) return { status: 'OK', message: 'Authenticated' };
-
-					const msg =
-						res?.description ??
-						res?.error_description ??
-						res?.error ??
-						res?.message ??
-						'Invalid token';
-					return { status: 'Error', message: msg };
-				} catch (err: any) {
-					return { status: 'Error', message: err?.message || 'Request failed' };
-				}
-			},
-		},
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
