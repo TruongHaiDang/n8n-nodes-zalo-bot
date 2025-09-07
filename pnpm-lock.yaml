@@ -16,7 +16,7 @@ importers:
         version: 6.0.1
     devDependencies:
       '@typescript-eslint/parser':
-        specifier: ~8.32.0
+        specifier: ~8.32.1
         version: 8.32.1(eslint@8.57.1)(typescript@5.8.3)
       eslint:
         specifier: ^8.57.0
